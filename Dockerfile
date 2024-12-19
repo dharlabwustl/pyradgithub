@@ -3,7 +3,9 @@ FROM python:3.10
 
 # Set environment variables for non-interactive installs
 ENV DEBIAN_FRONTEND=noninteractive
-
+RUN mkdir -p /callfromgithub
+RUN chmod 755 /callfromgithub
+COPY downloadcodefromgithub.sh /callfromgithub/
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3-venv \
