@@ -4,7 +4,7 @@ import pandas as pd
 
 # print("I AM HERE")
 # Example usage if run directly
-def call_pyradiomics(SESSION_ID,file_output_dir):
+def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     SCAN_ID,SCAN_NAME=get_selected_scan_info(SESSION_ID,file_output_dir)
     download_an_xmlfile_with_URIString_func(SESSION_ID,f'{SESSION_ID}.xml',file_output_dir)
     project_name,subject_name, session_label,acquisition_site_xml,acquisition_datetime_xml,scanner_from_xml,body_part_xml,kvp_xml=get_info_from_xml(os.path.join(file_output_dir,f'{SESSION_ID}.xml'))
@@ -15,13 +15,16 @@ def call_pyradiomics(SESSION_ID,file_output_dir):
     df1['scan_name']=SCAN_NAME
     df1.to_csv(os.path.join(file_output_dir,'radiomics.csv'),index=False)
     print(SCAN_ID)
+    resource_dir=mask_dir_and_ext[0]
+    for each_ext in mask_dir_and_ext[1:]:
+        print (each_ext)
     return 1
 if __name__ == "__main__":
     # import sys
     try:
         SESSION_ID=sys.argv[1]
         file_output_dir=sys.argv[2]
-        call_pyradiomics(SESSION_ID,file_output_dir)
+        call_pyradiomics(SESSION_ID,file_output_dir,sys.argv[4:])
         print(f"I AM HERE::{sys.argv[4:]}")
     except Exception as e:
         print(f"I FAILED::{e}")
