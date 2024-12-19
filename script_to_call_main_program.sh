@@ -8,5 +8,6 @@ echo ${TYPE_OF_PROGRAM}::TYPE_OF_PROGRAM
 if [[ ${TYPE_OF_PROGRAM} == "APPLY_PYRADIOMICS" ]] ;
 then
   echo ${TYPE_OF_PROGRAM}
+/workspace/venv/bin/python /software/run_pyradiomics.py
 #    /software/processing_before_segmentation.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST  ##/input /output
 fi
