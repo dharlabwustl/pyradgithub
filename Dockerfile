@@ -8,6 +8,7 @@ RUN chmod 755 /callfromgithub
 COPY downloadcodefromgithub.sh /callfromgithub/
 
 # Install system dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3-venv \
     python3-dev \
@@ -17,8 +18,11 @@ RUN apt-get update && apt-get install -y \
     libffi-dev \
     libssl-dev \
     zlib1g-dev \
+    libgl1 \
+    libglib2.0-0 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Create and activate a virtual environment
 WORKDIR /workspace
@@ -48,7 +52,7 @@ RUN pip install \
     PyGithub \
     scikit-image \
     opencv-python \
-    python-dateutil \
+    python-dateutil
 
 
 # Default command to start the container
