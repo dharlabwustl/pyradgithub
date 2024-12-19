@@ -4,6 +4,8 @@ import sys,os,glob,subprocess
 # Example usage if run directly
 def call_pyradiomics(SESSION_ID,file_output_dir):
     SCAN_ID,SCAN_NAME=get_selected_scan_info(SESSION_ID,file_output_dir)
+    download_an_xmlfile_with_URIString_func(SESSION_ID,f'{SESSION_ID}.xml',file_output_dir)
+
     print(SCAN_ID)
     return 1
 if __name__ == "__main__":
