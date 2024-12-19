@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN mkdir -p /callfromgithub
 RUN chmod 755 /callfromgithub
 COPY downloadcodefromgithub.sh /callfromgithub/
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3-venv \
@@ -27,14 +28,22 @@ ENV PATH="/workspace/venv/bin:$PATH"
 # Upgrade pip and install essential Python tools
 RUN pip install --upgrade pip wheel setuptools
 
-# Install PyRadiomics dependencies
-RUN pip install numpy scipy SimpleITK
+# Install required Python packages
+RUN pip install numpy scipy SimpleITK pandas nibabel requests xmltodict argparse
+
+# Optional: If you need `pydicom`, uncomment the next line
+# RUN pip install pydicom
 
 # Install PyRadiomics
 RUN pip install pyradiomics
 
 # Verify installation
 RUN python -c "import radiomics; print('PyRadiomics version:', radiomics.__version__)"
+
+# Install other required Python libraries
+RUN pip install \
+    pathlib \
+    glob2
 
 # Default command to start the container
 CMD ["/bin/bash"]
