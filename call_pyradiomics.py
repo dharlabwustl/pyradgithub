@@ -2,7 +2,7 @@ from download_with_session_ID_Dec192024 import *
 from utilities_simple_trimmed import *
 import sys,os,glob,subprocess
 import pandas as pd
-
+from run_pyradiomics import *
 # print("I AM HERE")
 # Example usage if run directly
 def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
