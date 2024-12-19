@@ -1,4 +1,5 @@
 from download_with_session_ID_Dec192024 import *
+from utilities_simple_trimmed import *
 import sys,os,glob,subprocess
 import pandas as pd
 
@@ -18,7 +19,10 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     resource_dir=mask_dir_and_ext[0]
     for each_ext in mask_dir_and_ext[1:]:
         downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
-        print (each_ext)
+        OUTPUT_DIRECTORY='workingoutput'
+        levelset2originalRF_new_flip_with_params(os.path.join('input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('input',SCAN_NAME.split('.nii')[0]+'_resaved_csf_unet.nii.gz'), 'workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
+
+    print (each_ext)
     return 1
 if __name__ == "__main__":
     # import sys

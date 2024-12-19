@@ -43,7 +43,13 @@ RUN python -c "import radiomics; print('PyRadiomics version:', radiomics.__versi
 # Install other required Python libraries
 RUN pip install \
     pathlib \
-    glob2
+    glob2 \
+    h5py \
+    PyGithub \
+    scikit-image \
+    opencv-python \
+    python-dateutil \
+
 
 # Default command to start the container
 CMD ["/bin/bash"]
