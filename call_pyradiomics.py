@@ -17,6 +17,7 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     print(SCAN_ID)
     resource_dir=mask_dir_and_ext[0]
     for each_ext in mask_dir_and_ext[1:]:
+        downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
         print (each_ext)
     return 1
 if __name__ == "__main__":

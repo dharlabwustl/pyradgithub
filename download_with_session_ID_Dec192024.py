@@ -149,6 +149,21 @@ def get_info_from_xml(xmlfile):
         subprocess.call("echo " + "I FAILED AT ::{}  >> /workingoutput/error.txt".format(inspect.stack()[0][3]) ,shell=True )
         pass
     return   project_name,subject_name, session_label,acquisition_site_xml,acquisition_datetime_xml,scanner_from_xml,body_part_xml,kvp_xml
+def downloadfile_withasuffix(sessionId,scanId,output_dirname,resource_dirname,file_suffix):
+    try:
+        print('sessionId::scanId::resource_dirname::output_dirname::{}::{}::{}::{}'.format(sessionId,scanId,resource_dirname,output_dirname))
+        url = (("/data/experiments/%s/scans/%s/resources/"+resource_dirname+"/files/") % (sessionId, scanId))
+        df_listfile=listoffile_witha_URI_as_df(url)
+        for item_id, row in df_listfile.iterrows():
+            if file_suffix in str(row['URI']) : ##.str.contains(file_suffix):
+                download_a_singlefile_with_URIString(row['URI'],row['Name'],output_dirname)
+                print("DOWNLOADED ::{}".format(row))
+        return True
+    except Exception as exception:
+        print("FAILED AT ::{}".format(exception))
+        pass
+    return  False
+
 
 def get_selected_scan_info(SESSION_ID, dir_to_save):
     # Log failure message for debugging
