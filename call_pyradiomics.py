@@ -11,6 +11,9 @@ def call_pyradiomics(SESSION_ID,file_output_dir):
     variable_dict={"project_name":project_name,"subject_name":subject_name, "session_label":session_label,"acquisition_site_xml":acquisition_site_xml,"acquisition_datetime_xml":acquisition_datetime_xml,"scanner_from_xml":scanner_from_xml,"body_part_xml":body_part_xml,"kvp_xml":kvp_xml}
 
     df1 = pd.DataFrame([variable_dict])
+    df1['session_id']=SESSION_ID
+    df1['scan_id']=SCAN_ID
+    df1['scan_name']=SCAN_NAME
     df1.to_csv(os.path.join(file_output_dir,'radiomics.csv'),index=False)
 
     print(SCAN_ID)
