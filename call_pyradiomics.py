@@ -3,7 +3,11 @@ print("I AM HERE")
 # Example usage if run directly
 if __name__ == "__main__":
     import sys
-    print("I AM HERE")
+    try:
+        print("I AM HERE")
+    except:
+        print("I FAILED")
+
     #
     # # Ensure input arguments are provided
     # if len(sys.argv) != 3:
