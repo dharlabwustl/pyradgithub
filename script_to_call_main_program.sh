@@ -27,8 +27,8 @@ fi
 
 echo ${TYPE_OF_PROGRAM}::TYPE_OF_PROGRAM::${SUBTYPE_OF_PROGRAM}::${ADDR[0]}::${ADDR[2]}::${ADDR[3]}
 if [[ ${TYPE_OF_PROGRAM} == 'APPLY_PYRADIOMICS' ]]; then
-  /bin/bash
-  echo "I AM HERE"
+/workspace/venv/bin/python call_pyradiomics.py
+
 
 #  /software/lin_transform_before_deepreg_mni_template.sh $SESSION_ID $XNAT_USER $XNAT_PASS $XNAT_HOST /input /output
 fi
