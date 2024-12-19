@@ -37,6 +37,118 @@ def download_a_singlefile_with_URIString(url,filename,dir_to_save):
                 f.write(chunk)
     # xnatSession.close_httpsession()
     return zipfilename
+def get_info_from_xml(xmlfile):
+    try:
+        # session_id=args.stuff[1]
+        # xmlfile=args.stuff[2]
+        subprocess.call("echo " + "I xmlfile AT ::{}  >> /workingoutput/error.txt".format(xmlfile) ,shell=True )
+        with open(xmlfile, encoding="utf-8") as fd:
+            xmlfile_dict = xmltodict.parse(fd.read())
+
+        project_name=''
+        subject_name=''
+        session_label=''
+        acquisition_site_xml=''
+        acquisition_datetime_xml=''
+        scanner_from_xml=''
+        body_part_xml=''
+        kvp_xml=''
+        try:
+            session_label=xmlfile_dict['xnat:CTSession']['@label']
+        except:
+            pass
+        try:
+            project_name=xmlfile_dict['xnat:CTSession']['@project']
+        except:
+            pass
+        try:
+            subject_name=str(xmlfile_dict['xnat:CTSession']['xnat:dcmPatientName'])
+        except:
+            pass
+        # Acquisition site
+        try:
+            acquisition_site_xml=xmlfile_dict['xnat:CTSession']['xnat:acquisition_site']
+        except:
+            pass
+        try:
+            date_split=str(xmlfile_dict['xnat:CTSession']['xnat:date']).split('-')
+            columnvalue_1="/".join([date_split[1],date_split[2],date_split[0]])
+            columnvalue_2=":".join(str(xmlfile_dict['xnat:CTSession']['xnat:time']).split(':')[0:2])
+            acquisition_datetime_xml=columnvalue_1+" "+ columnvalue_2
+        except:
+            pass
+        columnvalue_1=""
+        columnvalue_2=""
+        try:
+            for xx in range(len(xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'])):
+                if xx > 1:
+                    try:
+                        columnvalue_1= xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'][xx]['xnat:scanner']['@manufacturer']
+                        if len(columnvalue_1)>1:
+                            break
+                    except:
+                        pass
+            for xx in range(len(xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'])):
+                if xx > 1:
+                    try:
+                        columnvalue_2=  xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'][xx]['xnat:scanner']['@model']
+                        if len(columnvalue_2)>1:
+                            break
+                    except:
+                        pass
+
+            scanner_from_xml= columnvalue_1 + " " + columnvalue_2
+        except:
+            pass
+        ################
+        try:
+            for xx in range(len(xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'])):
+                if xx>1:
+                    try:
+                        body_part_xml=xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'][xx]['xnat:bodyPartExamined']
+                        # fill_datapoint_each_sessionn_1(identifier,columnname,columnvalue,csvfilename)
+                        if len(body_part_xml)>3:
+                            break
+                    except:
+                        pass
+
+        except:
+            pass
+        ###############
+        ###############
+
+        try:
+            for xx in range(len(xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'])):
+                if xx>1:
+                    try:
+                        kvp_xml=xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'][xx]['xnat:parameters']['xnat:kvp']
+                        # fill_datapoint_each_sessionn_1(identifier,columnname,columnvalue,csvfilename)
+                        if len(kvp_xml)>1:
+                            break
+                    except:
+                        pass
+            # columnvalue=xmlfile_dict['xnat:CTSession']['xnat:scans']['xnat:scan'][0]['xnat:parameters']['xnat:kvp']
+            # fill_datapoint_each_sessionn_1(identifier,columnname,columnvalue,csvfilename)
+        except:
+            subprocess.call("echo " + "I PASSED AT ::{}  >> /workingoutput/error.txt".format(inspect.stack()[0][3]) ,shell=True )
+            pass
+        ###############
+
+        subprocess.call("echo " + "I PASSED AT ::{}  >> /workingoutput/error.txt".format(inspect.stack()[0][3]) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT project_name::{}  >> /workingoutput/error.txt".format(project_name) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT subject_name::{}  >> /workingoutput/error.txt".format(subject_name) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT session_label::{}  >> /workingoutput/error.txt".format(session_label) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT acquisition_site_xml::{}  >> /workingoutput/error.txt".format(acquisition_site_xml) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT ::{}  >> /workingoutput/error.txt".format(inspect.stack()[0][3]) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT acquisition_datetime_xml::{}  >> /workingoutput/error.txt".format(acquisition_datetime_xml) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT scanner_from_xml::{}  >> /workingoutput/error.txt".format(scanner_from_xml) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT body_part_xml::{}  >> /workingoutput/error.txt".format(body_part_xml) ,shell=True )
+        subprocess.call("echo " + "I PASSED AT kvp_xml::{}  >> /workingoutput/error.txt".format(kvp_xml) ,shell=True )
+    except:
+        # print("I FAILED AT ::{}".format(inspect.stack()[0][3]))
+        subprocess.call("echo " + "I FAILED AT ::{}  >> /workingoutput/error.txt".format(inspect.stack()[0][3]) ,shell=True )
+        pass
+    return   project_name,subject_name, session_label,acquisition_site_xml,acquisition_datetime_xml,scanner_from_xml,body_part_xml,kvp_xml
 
 def get_selected_scan_info(SESSION_ID, dir_to_save):
     # Log failure message for debugging
