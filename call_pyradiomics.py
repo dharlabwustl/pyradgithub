@@ -13,8 +13,8 @@ if __name__ == "__main__":
         file_output_dir=sys.argv[2]
         call_pyradiomics(SESSION_ID,file_output_dir)
         print("I AM HERE")
-    except:
-        print("I FAILED")
+    except Exception as e:
+        print(f"I FAILED::{e}")
 
     #
     # # Ensure input arguments are provided
