@@ -22,3 +22,72 @@ xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST
 class arguments:
     def __init__(self,stuff=[]):
         self.stuff=stuff
+
+def get_selected_scan_info(SESSION_ID, dir_to_save):
+    # Log failure message for debugging
+    command = f"echo failed at each_row_id: {inspect.stack()[0][3]} >> output/error.txt"
+    subprocess.call(command, shell=True)
+
+    # Define the URI and URL for the request
+    URI = f'/data/experiments/{SESSION_ID}'
+    url = f"{URI}/resources/NIFTI_LOCATION/files?format=json"
+
+    # Initialize XNAT session
+    xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST)
+    xnatSession.renew_httpsession()
+
+    try:
+        # Make a GET request to the XNAT server
+        response = xnatSession.httpsess.get(xnatSession.host + url)
+        response.raise_for_status()  # Raise an error for unsuccessful responses
+        metadata_masks = response.json()['ResultSet']['Result']
+
+        # Convert metadata to a DataFrame
+        df_scan = pd.read_json(json.dumps(metadata_masks))
+
+        # Log additional debug information
+        command = f"echo failed_1 at each_row_id: {df_scan['URI'].iloc[0]} >> output/error.txt"
+        subprocess.call(command, shell=True)
+
+        # Download the file specified by the URI
+        download_a_singlefile_with_URIString(
+            str(df_scan['URI'].iloc[0]),
+            os.path.basename(str(df_scan['URI'].iloc[0])),
+            dir_to_save
+        )
+
+        # Read the downloaded file to extract SCAN_ID and SCAN_NAME
+        nifti_location = pd.read_csv(
+            os.path.join(dir_to_save, os.path.basename(str(df_scan['URI'].iloc[0])))
+        )
+        SCAN_ID = str(nifti_location.loc[nifti_location.index[0], 'ID'])
+        SCAN_NAME = str(nifti_location.loc[nifti_location.index[0], 'Name'])
+
+        # Log success message
+        command = f"echo passed at each_row_id: {inspect.stack()[0][3]} >> output/error.txt"
+        subprocess.call(command, shell=True)
+
+        return SCAN_ID, SCAN_NAME
+
+    except Exception as e:
+        # Log exception details for debugging
+        command = f"echo exception at {inspect.stack()[0][3]}: {str(e)} >> output/error.txt"
+        subprocess.call(command, shell=True)
+        raise e
+
+    finally:
+        # Close the XNAT session
+        xnatSession.close_httpsession()
+
+
+def get_metadata_session(sessionId,outputfile="NONE.csv"):
+    url = ("/data/experiments/%s/scans/?format=json" %    (sessionId))
+    xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST)
+    xnatSession.renew_httpsession()
+    response = xnatSession.httpsess.get(xnatSession.host + url)
+    xnatSession.close_httpsession()
+    metadata_session=response.json()['ResultSet']['Result']
+    metadata_session_1=json.dumps(metadata_session)
+    df_scan = pd.read_json(metadata_session_1)
+    df_scan.to_csv(outputfile,index=False)
+    return metadata_session
