@@ -5,7 +5,7 @@ import sys,os,glob,subprocess
 def call_pyradiomics(SESSION_ID,file_output_dir):
     SCAN_ID,SCAN_NAME=get_selected_scan_info(SESSION_ID,file_output_dir)
     download_an_xmlfile_with_URIString_func(SESSION_ID,f'{SESSION_ID}.xml',file_output_dir)
-    project_name,subject_name, session_label,acquisition_site_xml,acquisition_datetime_xml,scanner_from_xml,body_part_xml,kvp_xml=get_info_from_xml(os.path.join(working_dir_1,f'{SESSION_ID}.xml'))
+    project_name,subject_name, session_label,acquisition_site_xml,acquisition_datetime_xml,scanner_from_xml,body_part_xml,kvp_xml=get_info_from_xml(os.path.join(file_output_dir,f'{SESSION_ID}.xml'))
 
 
     print(SCAN_ID)
