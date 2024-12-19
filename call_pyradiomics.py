@@ -20,8 +20,14 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,'NIFTI','.nii')
     for each_ext in mask_dir_and_ext[1:]:
         downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
-        OUTPUT_DIRECTORY='/workingoutput'
         levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
+    for each_ext in mask_dir_and_ext[1:]:
+
+        extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), glob.glob('/workingoutput/*'+each_ext)[0], output_csv=None)
+        # downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
+        # levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
+
+
 
     print (each_ext)
     return 1
