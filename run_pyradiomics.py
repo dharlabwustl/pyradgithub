@@ -36,7 +36,7 @@ def extract_radiomics_features(gray_image, mask_image, output_csv=None):
 
     # Extract features
     try:
-        if nib.load(gray_image).shape == nib.load(mask_image):
+        if nib.load(gray_image).shape == nib.load(mask_image).shape:
             features = extractor.execute(gray_image, mask_image)
 
             # Convert to DataFrame and save as CSV
