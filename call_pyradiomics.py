@@ -27,9 +27,11 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,'NIFTI','.nii')
     original_nifti=os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii')
     output_csv_list=[]
+    file_output_dir1='/workinginput'
     for each_ext in mask_dir_and_ext[1:]:
-        downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
-        levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
+        downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir1,resource_dir,each_ext)
+        for each_file in os.path.join(file_output_dir1,'*'+each_ext):
+            levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), each_file, '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
     for each_ext in mask_dir_and_ext[1:]:
         this_mask=glob.glob('/workingoutput/*'+each_ext) #[0]
         for this_mask_each in this_mask:
