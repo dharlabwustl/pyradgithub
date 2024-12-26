@@ -7,11 +7,11 @@ from run_pyradiomics import *
 # print("I AM HERE")
 # Example usage if run directly
 
-def fill_local_mysql(session_id, session_name, scan_id, scan_name,column_name,column_value):
-    insert_data(session_id, session_name, scan_id, scan_name)
-    update_or_create_column(session_id, scan_id, column_name, column_value,session_name,scan_name)
-    # update_or_create_column(session_id, scan_id, 'session_name', session_name,session_name,scan_name)
-    # update_or_create_column(session_id, scan_id, 'scan_name', scan_name,session_name,scan_name)
+# def fill_local_mysql(session_id, session_name, scan_id, scan_name,column_name,column_value):
+#     insert_data(session_id, session_name, scan_id, scan_name)
+#     update_or_create_column(session_id, scan_id, column_name, column_value,session_name,scan_name)
+#     # update_or_create_column(session_id, scan_id, 'session_name', session_name,session_name,scan_name)
+#     # update_or_create_column(session_id, scan_id, 'scan_name', scan_name,session_name,scan_name)
 def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     SCAN_ID,SCAN_NAME=get_selected_scan_info(SESSION_ID,file_output_dir)
     download_an_xmlfile_with_URIString_func(SESSION_ID,f'{SESSION_ID}.xml',file_output_dir)
@@ -34,13 +34,19 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
         extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), this_mask, output_csv=this_mask.split('.nii')[0]+'_radiomics.csv')
         # downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
         # levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
-    for each_ext in mask_dir_and_ext[1:]:
+    for each_radiomic_file in glob.glob(os.path.join(this_mask)+'*_radiomics.csv'):
         try:
-
-            insert_data(SESSION_ID, session_label, SCAN_ID, SCAN_NAME)
-            print('success')
+            resource_dirname='RADIOMICS'
+            url='/data/experiments/'+SESSION_ID+'/scans/'+SCAN_ID+'/resources/'+resource_dirname
+            uploadsinglefile_with_URI(url,each_radiomic_file,resource_dirname)
         except:
             pass
+
+    #
+    #         insert_data(SESSION_ID, session_label, SCAN_ID, SCAN_NAME)
+    #         print('success')
+    #     except:
+    #         pass
 
 
     print (each_ext)
@@ -52,6 +58,7 @@ if __name__ == "__main__":
         file_output_dir=sys.argv[2]
         call_pyradiomics(SESSION_ID,file_output_dir,sys.argv[4:])
         print(f"I AM HERE::{sys.argv[4:]}")
+
     except Exception as e:
         print(f"I FAILED::{e}")
 
