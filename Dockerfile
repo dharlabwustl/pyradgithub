@@ -53,7 +53,7 @@ RUN pip install \
     scikit-image \
     opencv-python \
     python-dateutil \
-    mysql-connector-python
+    mysql-connector-python==8.0.27
 
 
 # Default command to start the container
