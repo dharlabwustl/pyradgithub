@@ -44,7 +44,9 @@ def extract_radiomics_features(gray_image, mask_image, output_csv=None):
 
         return output_csv
     except Exception as e:
-        raise Exception(f"Error during feature extraction: {e}")
+        print(f"Error during feature extraction: {e}")
+        pass
+        # raise Exception(f"Error during feature extraction: {e}")
 
 # Example usage if run directly
 if __name__ == "__main__":
