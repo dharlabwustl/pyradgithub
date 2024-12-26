@@ -52,7 +52,8 @@ RUN pip install \
     PyGithub \
     scikit-image \
     opencv-python \
-    python-dateutil
+    python-dateutil \
+    mysql-connector-python
 
 
 # Default command to start the container

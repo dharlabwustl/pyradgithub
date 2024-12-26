@@ -27,7 +27,7 @@ def connect_to_database():
     try:
         # Establish connection
         connection = mysql.connector.connect(
-            host=random_ip,  # Use the randomly selected IP
+            host='10.39.217.11', #random_ip,  # Use the randomly selected IP
             user="root",  # Replace with your username
             password="ircadircad",  # Replace with your password
             database="snipr_results"  # Replace with your database name

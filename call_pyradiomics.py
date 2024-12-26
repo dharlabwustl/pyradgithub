@@ -2,9 +2,16 @@ from download_with_session_ID_Dec192024 import *
 from utilities_simple_trimmed import *
 import sys,os,glob,subprocess
 import pandas as pd
+from fill_local_mysql_Dec262024 import *
 from run_pyradiomics import *
 # print("I AM HERE")
 # Example usage if run directly
+
+def fill_local_mysql(session_id, session_name, scan_id, scan_name,column_name,column_value):
+    insert_data(session_id, session_name, scan_id, scan_name)
+    update_or_create_column(session_id, scan_id, column_name, column_value,session_name,scan_name)
+    # update_or_create_column(session_id, scan_id, 'session_name', session_name,session_name,scan_name)
+    # update_or_create_column(session_id, scan_id, 'scan_name', scan_name,session_name,scan_name)
 def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     SCAN_ID,SCAN_NAME=get_selected_scan_info(SESSION_ID,file_output_dir)
     download_an_xmlfile_with_URIString_func(SESSION_ID,f'{SESSION_ID}.xml',file_output_dir)
@@ -27,7 +34,12 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
         extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), this_mask, output_csv=this_mask.split('.nii')[0]+'_radiomics.csv')
         # downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
         # levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
-
+    for each_ext in mask_dir_and_ext[1:]:
+        try:
+            print('success')
+            insert_data(SESSION_ID, session_label, SCAN_ID, SCAN_NAME)
+        except:
+            pass
 
 
     print (each_ext)
