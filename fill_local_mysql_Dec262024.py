@@ -57,6 +57,9 @@ def insert_data(session_id, session_name, scan_id, scan_name):
         # Execute and commit the transaction
         cursor.execute(sql_query, data)
         connection.commit()
+        cursor.close()
+        connection.close()
+        print("MySQL connection closed.")
 
         print(f"Record inserted successfully. ID: {cursor.lastrowid}")
 
