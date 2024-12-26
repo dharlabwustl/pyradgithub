@@ -39,8 +39,8 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
             resource_dirname='RADIOMICS'
             url='/data/experiments/'+SESSION_ID+'/scans/'+SCAN_ID ##+'/resources/'+resource_dirname
             uploadsinglefile_with_URI(url,each_radiomic_file,resource_dirname)
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     #
     #         insert_data(SESSION_ID, session_label, SCAN_ID, SCAN_NAME)
