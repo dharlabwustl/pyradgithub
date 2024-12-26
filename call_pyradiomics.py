@@ -34,7 +34,7 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
         extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), this_mask, output_csv=this_mask.split('.nii')[0]+'_radiomics.csv')
         # downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
         # levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
-    for each_radiomic_file in glob.glob(os.path.join(this_mask)+'*_radiomics.csv'):
+    for each_radiomic_file in glob.glob(os.path.join(this_mask),'*_radiomics.csv'):
         try:
             resource_dirname='RADIOMICS'
             url='/data/experiments/'+SESSION_ID+'/scans/'+SCAN_ID ##+'/resources/'+resource_dirname
