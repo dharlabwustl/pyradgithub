@@ -35,6 +35,9 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
         for this_mask_each in this_mask:
             output_csv=extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), this_mask_each, output_csv=this_mask_each.split('.nii')[0]+'_radiomics.csv')
             output_csv_list.append(output_csv)
+            df2=pd.read_csv(output_csv)
+            concatenated_df = pd.concat([df1, df2], axis=1)
+            concatenated_df.to_csv(output_csv,index=False)
         # downloadfile_withasuffix(SESSION_ID,SCAN_ID,file_output_dir,resource_dir,each_ext)
         # levelset2originalRF_new_flip_with_params(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), os.path.join('/input',SCAN_NAME.split('.nii')[0]+each_ext), '/workingoutput') #, mask_color=(0, 255, 0), image_prefix="original_ct_with_infarct_only", threshold=0.5)
     # for each_radiomic_file in glob.glob(os.path.dirname(this_mask)+'/*_radiomics.csv'):
@@ -43,8 +46,8 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     #     for this_mask_each in this_mask:
     for each_radiomic_file in output_csv_list: ##glob.glob(os.path.dirname(this_mask_each)+'/*_radiomics.csv'):
         try:
-            df2=pd.csv_read(each_radiomic_file)
-            concatenated_df = pd.concat([df1, df2], axis=1)
+            # df2=pd.read_csv(each_radiomic_file)
+            # concatenated_df = pd.concat([df1, df2], axis=1)
             concatenated_df.to_csv(each_radiomic_file,index=False)
             print("Before UPLOAD SUCCESS")
             resource_dirname='RADIOMICS'
