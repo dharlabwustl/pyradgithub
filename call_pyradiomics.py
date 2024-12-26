@@ -38,7 +38,7 @@ if __name__ == "__main__":
     try:
         SESSION_ID=sys.argv[1]
         file_output_dir=sys.argv[2]
-        call_pyradiomics(SESSION_ID,file_output_dir,sys.argv[4:])
+        # call_pyradiomics(SESSION_ID,file_output_dir,sys.argv[4:])
         print(f"I AM HERE::{sys.argv[3:]}")
     except Exception as e:
         print(f"I FAILED::{e}")
