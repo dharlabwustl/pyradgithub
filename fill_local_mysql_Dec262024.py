@@ -27,7 +27,7 @@ def connect_to_database():
     try:
         # Establish connection
         connection = mysql.connector.connect(
-            host='128.252.210.4', ##'10.39.217.11', #random_ip,  # Use the randomly selected IP
+            host=10.39.217.11' ###'128.252.210.4', ##'10.39.217.11', #random_ip,  # Use the randomly selected IP
             user="root",  # Replace with your username
             password="ircadircad",  # Replace with your password
             database="snipr_results"  # Replace with your database name
@@ -57,9 +57,7 @@ def insert_data(session_id, session_name, scan_id, scan_name):
         # Execute and commit the transaction
         cursor.execute(sql_query, data)
         connection.commit()
-        cursor.close()
-        connection.close()
-        print("MySQL connection closed.")
+
 
         print(f"Record inserted successfully. ID: {cursor.lastrowid}")
 
