@@ -1,7 +1,7 @@
 import os
 from radiomics import featureextractor
 import pandas as pd
-
+import nibabel as nib
 def extract_radiomics_features(gray_image, mask_image, output_csv=None):
     """
     Extract radiomics features from a grayscale image and corresponding mask.
@@ -36,13 +36,14 @@ def extract_radiomics_features(gray_image, mask_image, output_csv=None):
 
     # Extract features
     try:
-        features = extractor.execute(gray_image, mask_image)
+        if nib.load(gray_image).shape == nib.load(mask_image):
+            features = extractor.execute(gray_image, mask_image)
 
-        # Convert to DataFrame and save as CSV
-        df = pd.DataFrame([features])
-        df.to_csv(output_csv, index=False)
+            # Convert to DataFrame and save as CSV
+            df = pd.DataFrame([features])
+            df.to_csv(output_csv, index=False)
 
-        return output_csv
+            return output_csv
     except Exception as e:
         print(f"Error during feature extraction: {e}")
         pass
