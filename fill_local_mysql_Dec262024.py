@@ -149,5 +149,5 @@ if __name__ == "__main__":
     column_value =sys.argv[6] #  "200"  # Value to be set in the new column
 
     update_or_create_column(session_id, scan_id, column_name, column_value,session_name,scan_name)
-    update_or_create_column(session_id, scan_id, 'session_name', session_name,session_name,scan_name)
-    update_or_create_column(session_id, scan_id, 'scan_name', scan_name,session_name,scan_name)
+    # update_or_create_column(session_id, scan_id, 'session_name', session_name,session_name,scan_name)
+    # update_or_create_column(session_id, scan_id, 'scan_name', scan_name,session_name,scan_name)
