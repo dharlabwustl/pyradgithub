@@ -22,6 +22,22 @@ xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST
 class arguments:
     def __init__(self,stuff=[]):
         self.stuff=stuff
+def uploadsinglefile_with_URI(url,file_name,resource_dirname):
+    try:
+
+        url = url+"/resources/"+resource_dirname+"/files/"
+        xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST)
+        xnatSession.renew_httpsession()
+        files={'file':open(file_name,'rb')}
+        response = xnatSession.httpsess.post(xnatSession.host + url,files=files)
+        print("response::{}".format(response))
+
+        xnatSession.close_httpsession()
+        print("I UPLOADED FILE WITH  uploadsinglefile_with_URI")
+    except:
+        print("I FAILED AT uploadsinglefile_with_URI")
+        pass
+
 def download_a_singlefile_with_URIString(url,filename,dir_to_save):
     print("url::{}::filename::{}::dir_to_save::{}".format(url,filename,dir_to_save))
     # xnatSession = XnatSession(username=XNAT_USER, password=XNAT_PASS, host=XNAT_HOST)

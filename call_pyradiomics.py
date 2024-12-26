@@ -37,7 +37,7 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     for each_radiomic_file in glob.glob(os.path.join(this_mask)+'*_radiomics.csv'):
         try:
             resource_dirname='RADIOMICS'
-            url='/data/experiments/'+SESSION_ID+'/scans/'+SCAN_ID+'/resources/'+resource_dirname
+            url='/data/experiments/'+SESSION_ID+'/scans/'+SCAN_ID ##+'/resources/'+resource_dirname
             uploadsinglefile_with_URI(url,each_radiomic_file,resource_dirname)
         except:
             pass
