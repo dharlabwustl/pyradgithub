@@ -2,6 +2,7 @@ from download_with_session_ID_Dec192024 import *
 from utilities_simple_trimmed import *
 import sys,os,glob,subprocess
 import pandas as pd
+import nibabel as nib
 from fill_local_mysql_Dec262024 import *
 from run_pyradiomics import *
 # print("I AM HERE")
@@ -35,6 +36,13 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
     for each_ext in mask_dir_and_ext[1:]:
         this_mask=glob.glob('/workingoutput/*'+each_ext) #[0]
         for this_mask_each in this_mask:
+            this_mask_each_nib=nib.load(this_mask_each)
+            this_mask_each_nib_data=this_mask_each_nib.get_fdata()
+            this_mask_each_nib_data[this_mask_each_nib_data>0]=1
+            this_mask_each_nib_data[this_mask_each_nib_data<1]=0
+            arraynib=nib.Nifti1Image(this_mask_each_nib_data,affine=this_mask_each_nib.affine,header=this_mask_each_nib.header)
+            nib.save(arraynib,this_mask_each)
+
             output_csv=extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), this_mask_each, output_csv=this_mask_each.split('.nii')[0]+'_radiomics.csv')
             output_csv_list.append(output_csv)
             df2=pd.read_csv(output_csv)
