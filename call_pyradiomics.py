@@ -46,7 +46,9 @@ def call_pyradiomics(SESSION_ID,file_output_dir,mask_dir_and_ext):
                 output_csv=extract_radiomics_features(os.path.join('/input',SCAN_NAME.split('.nii')[0]+'.nii'), this_mask_each, output_csv=this_mask_each.split('.nii')[0]+'_radiomics.csv')
                 output_csv_list.append(output_csv)
                 df2=pd.read_csv(output_csv)
+                maskfilename=os.path.basename(this_mask_each)
                 concatenated_df = pd.concat([df1, df2], axis=1)
+                concatenated_df['maskfilename']=maskfilename
                 concatenated_df.to_csv(output_csv,index=False)
             except:
                 pass
